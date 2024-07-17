@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>Inicio | La Caffettiera</title>
+
+    {% load static %}
+    <!-- Bootstrap -->
+    <link href="{% static 'core/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" /> 
+
+    <!-- Fuentes -->
+    <link 
+      href="{% static 'core/vendor/font-awesome/css/font-awesome.min.css' %}" 
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i"
+      rel="stylesheet"
+    />
+
+    <!-- Estilos -->
+    <link href="{% static 'core/css/business-casual.css' %}" rel="stylesheet" /> 
+  </head>
+
+  <body>
+    <h1 class="site-heading text-center text-white d-none d-lg-block">
+      <span class="site-heading-upper text-primary mb-3"
+        >L'autentico caffè d'italia</span
+      >
+      <span class="site-heading-lower">La Caffettiera</span>
+    </h1>
+
+    <!-- Navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
+      <div class="container">
+        <a
+          class="navbar-brand text-uppercase text-expanded font-weight-bold d-lg-none"
+          href="index.html"
+          >La Caffettiera</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarResponsive"
+          aria-controls="navbarResponsive"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item px-lg-4 {% if request.path == '/' %}active{% endif %}">
+              <a class="nav-link text-uppercase text-expanded" href="{% url 'home' %}" 
+                >Inicio</a
+              >
+            </li>
+            <li class="nav-item px-lg-4 {% if request.path == '/about/' %}active{% endif %}">
+              <a class="nav-link text-uppercase text-expanded" href="{% url 'about' %}"
+                >Historia</a
+              >
+            </li>
+            <li class="nav-item px-lg-4 {% if request.path == '/services/' %}active{% endif %}">
+              <a
+                class="nav-link text-uppercase text-expanded"
+                href="{% url 'services' %}"
+                >Servicios</a
+              >
+            </li>
+            <li class="nav-item px-lg-4 {% if request.path == '/store/' %}active{% endif %}">
+              <a class="nav-link text-uppercase text-expanded" href="{% url 'store' %}"
+                >Visítanos</a
+              >
+            </li>
+            <li class="nav-item px-lg-4 {% if request.path == '/contact/' %}active{% endif %}">
+              <a
+                class="nav-link text-uppercase text-expanded"
+                href="{% url 'contact' %}"
+                >Contacto</a
+              >
+            </li>
+            <li class="nav-item px-lg-4 {% if request.path == '/blog/' %}active{% endif %}">
+              <a class="nav-link text-uppercase text-expanded" href="{% url 'blog' %}"
+                >Blog</a
+              >
+            </li>
+            {% if not request.user.is_authenticated %}
+            <li class="nav-item px-lg-4">
+              <a class="nav-link text-uppercase text-expanded" href="{% url 'login' %}">Opciones de administrador</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <form style="display: inline;" method="post" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button class="nav-link" style="background:none; border:none; cursor:pointer; padding:0; 
+             color:rgba(255,255,255,.5);" type="submit">Salir</button>
+              </form>
+              </li>
+              {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    {% block content %}{% endblock content %}
+
+    <!-- Pié de página -->
+    <footer class="footer text-faded text-center py-5">
+      <div class="container">
+        <p class="m-0">
+          {% load social_extra %}
+          {% get_social_list as social_list %}
+          {% for social in social_list  %}
+          <a href="{{social.url}}" class="link" target="_blank" rel="noopener noreferrer">
+            <span class="fa-stack fa-lg">
+              <i class="fa fa-circle fa-stack-2x"></i>
+              <i class="fa fa-{{social.name}} fa-stack-1x fa-inverse"></i>
+              {% if request.user.is_staff %}
+              <p style="font-size:12px;">
+                <a style="text-decoration:none; color:white;" href="{% url 'update_social' social.id %}">Editar</a>
+              · <a style="text-decoration:none; color:white;" href="{% url 'delete_social' social.id %}">Borrar</a>
+              </p>
+              {% endif %}
+            </span>
+          </a>
+          {% endfor %}
+          {% if request.user.is_staff %}<a class="btn btn-primary" style="font-size:12px;" href="{% url 'create_social' %}">Agregar red social</a>{% endif %}
+        </p>
+        <p class="m-0 mbt">
+          {% load sample_extra %}
+          {% get_sample_list as sample_list %}
+          {% for sample in sample_list %}
+          <a href="{% url 'detail_sample' sample.id %}" class="link">{{sample.title}}</a> · 
+          {% if request.user.is_staff %}
+              <p style="font-size:12px;">
+                <a style="text-decoration:none; color:white;" href="{% url 'update_sample' sample.id %}">Editar</a>
+              · <a style="text-decoration:none; color:white;" href="{% url 'delete_sample' sample.id %}">Borrar</a>
+              </p>
+          {% endif %}
+          {% endfor %}
+          {% if request.user.is_staff %}<a class="btn btn-primary" style="font-size:12px;" href="{% url 'create_sample' %}">Agregar sample</a>{% endif %}
+        </p>
+        <p class="m-0 mbt1">&copy; La Caffettiera 2024</p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap -->
+    <script src="{% static 'core/vendor/jquery/jquery.min.js' %}"></script> 
+    <script src="{% static 'core/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script> 
+  </body>
+</html>

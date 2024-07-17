@@ -1,0 +1,23 @@
+{% if request.user.is_staff %}
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container">
+    <span class="navbar-brand" href="#"><b>Administrar blogs</b></span>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nep" aria-controls="nep" aria-expanded="false">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="nep">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="btn btn-primary" href="{% url 'create_blog' %}"><p>Crear blog</p></a>
+        </li>
+        <li class="nav-item">
+          <a style="margin-left:10px" class="btn btn-primary" href="{% url 'create_category' %}"><p>Crear categoría</p></a>
+        </li>
+        <li class="nav-item">
+          <a style="margin-left:10px" class="btn btn-primary" href="{% url 'categories' %}"><p>Todas las categorías</p></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+{% endif %}

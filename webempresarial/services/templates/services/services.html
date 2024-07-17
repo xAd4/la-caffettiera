@@ -1,0 +1,39 @@
+{% extends "core/base.html" %} 
+{% block content %}
+{% load static %}
+{% include 'services/includes/pages_menu.html' %}
+{% for service in object_list %}
+<section class="page-section">
+  <div class="container">
+    <div class="product-item">
+      <div class="product-item-title d-flex">
+        <div class="bg-faded p-5 d-flex mr-auto rounded">
+          <h2 class="section-heading mb-0">
+            <span class="section-heading-upper">{{service.title}}</span>
+            <span class="section-heading-lower">{{service.subTitle}}</span>
+          </h2>
+        </div>
+      </div>
+      <img
+        class="product-item-img mx-auto d-flex rounded img-fluid mb-3 mb-lg-0"
+        src="{{service.image.url}}" 
+        alt=""
+      />
+      <div class="product-item-description d-flex ml-auto">
+        <div class="bg-faded p-5 rounded">
+          <p class="mb-0">
+            {{service.content}}
+          </p>
+          {% if request.user.is_staff %}
+          <p>
+            <a style="text-decoration:none; color:white;" class="btn btn-primary" href="{% url 'update_service' service.id %}">Editar</a>
+          · <a style="text-decoration:none; color:white;" class="btn btn-primary" href="{% url 'delete_service' service.id %}">Borrar</a>
+          </p>
+      {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endfor %}
+{% endblock content %}

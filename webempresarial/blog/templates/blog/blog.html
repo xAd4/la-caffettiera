@@ -1,0 +1,44 @@
+{% extends "core/base.html" %} 
+{% block content %}
+{% load static %}
+{% include 'blog/includes/pages_menu.html' %}
+{% for blog in object_list %}
+<section class="page-section cta">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-9 mx-auto">
+        <div class="cta-innerv text-center rounded">
+          <h2 class="section-heading mb-5">
+            <span class="section-heading-upper">{{blog.date|date:"SHORT_DATE_FORMAT"}}</span>
+            <span class="section-heading-lower">{{blog.title}}</span>
+          </h2>
+          <p class="mb-0">
+            <img
+              class="mx-auto d-flex rounded img-fluid mb-3 mb-lg-0"
+              src="{{blog.image.url}}" 
+              alt=""
+            />
+          </p>
+          <p class="mb-0 mbt">
+            {{blog.content|striptags|safe|truncatechars:"200"}}
+          </p>
+          <p class="mb-0 mbt">
+            <span class="section-heading-under"
+              >Publicado por <em><b>{{blog.author}}</b></em> en
+              <em><a href="{% url 'detail_blog' blog.id %}" class="link">{{blog.categories.all|join:", "}} · Leer más</a></em
+              ></span
+            >
+          </p>
+          {% if request.user.is_staff %}
+          <p class="mt-4">
+            <a style="text-decoration:none; color:white;" class="btn btn-primary" href="{% url 'update_blog' blog.id %}">Editar</a>
+          · <a style="text-decoration:none; color:white;" class="btn btn-primary" href="{% url 'delete_blog' blog.id %}">Borrar</a>
+          </p>
+      {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endfor %}
+{% endblock content %}

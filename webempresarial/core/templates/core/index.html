@@ -1,0 +1,63 @@
+{% extends "core/base.html" %} 
+{% block content %}
+<!-- Cabecera -->
+{% load static %}
+<section class="page-section clearfix">
+{% load core_one_extra %}
+{% get_coreone_list as core_one %}
+{% for section_one in core_one %}
+  <div class="container">
+    <div class="intro">
+      <img
+        class="intro-img img-fluid mb-3 mb-lg-0 rounded"
+        src="{% static 'core/img/intro.jpg' %}" 
+        alt=""
+      />
+      <div class="intro-text left-0 text-center bg-faded p-5 rounded">
+        <h2 class="section-heading mb-4">
+          <span class="section-heading-upper">{{section_one.title}}</span> 
+          <span class="section-heading-lower">{{section_one.subTitle}}</span>
+        </h2>
+        <p class="mb-3">
+          {{section_one.content}}
+        </p>
+        <div class="intro-button mx-auto">
+          <a class="btn btn-primary btn-xl" href="{% url 'store' %}">Visítanos</a>
+          {% if request.user.is_staff %}
+          <a class="btn btn-primary btn-xl" href="{% url 'core_one' section_one.id %}">Editar</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+</section>
+
+<!-- Mensaje -->
+<section class="page-section cta">
+{% load core_two_extra %}
+{% get_coretwo_list as core_two %}
+{% for section_two in core_two %}
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-9 mx-auto">
+        <div class="cta-inner text-center rounded">
+          <h2 class="section-heading mb-4">
+            <span class="section-heading-upper">{{section_two.title}}</span>
+            <span class="section-heading-lower">{{section_two.subTitle}}</span>
+          </h2>
+          <p class="mb-0">
+            {{section_two.content}}
+          </p>
+        </div>
+        {% if request.user.is_staff %}
+          <div class="intro-button mx-auto mt-3">
+            <a class="btn btn-primary btn-block" href="{% url 'core_two' section_two.id %}">Editar</a>
+          </div>
+          {% endif %}
+      </div>
+    </div>
+  </div>
+{% endfor %}
+</section>
+{% endblock content %}

@@ -1,0 +1,32 @@
+{% extends "core/base.html" %} 
+{% block content %}
+{% load static %}
+{% include 'blog/includes/pages_menu.html' %}
+{% for category in object_list %}
+<h4 class="section-heading mb-2">
+  <span class="section-heading-lower">...</span>
+</h4>
+<section class="page-section about-heading">
+  <div class="container">
+    <div class="about-heading-content">
+      <div class="row">
+        <div class="col-xl-9 col-lg-10 mx-auto">
+          <div class="bg-faded rounded p-5">
+            <h4 class="section-heading mb-4">
+              <span class="section-heading-lower">{{category.name}}</span>
+            </h4>
+            {% if request.user.is_staff %}
+          <p class="mt-4">
+            <a style="text-decoration:none; color:white;" class="btn btn-primary" href="{% url 'update_category' category.id %}">Editar</a>
+          · <a style="text-decoration:none; color:white;" class="btn btn-primary" href="{% url 'delete_category' category.id %}">Borrar</a>
+          </p>
+      {% endif %}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endfor %}
+{% endblock content %}

@@ -1,0 +1,47 @@
+{% extends "core/base.html" %}
+ {% block content %}
+<section class="page-section cta">
+  {% load store_extra %}
+  {% get_store_list as store_list %}
+  {% for store in store_list %}
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-9 mx-auto">
+        <div class="cta-inner text-center rounded">
+          <h2 class="section-heading mb-5">
+            <span class="section-heading-upper">Te esperamos</span>
+            <span class="section-heading-lower">{{store.title}}</span>
+          </h2>
+          <ul class="list-unstyled list-hours mb-5 text-left mx-auto">
+            <li class="list-unstyled-item list-hours-item d-flex">
+              {{store.week_days}}
+              <span class="ml-auto">{{store.week_days_schedule}}</span>
+            </li>
+            <li class="list-unstyled-item list-hours-item d-flex">
+              {{store.weekend}}
+              <span class="ml-auto">{{store.weekend_schedule}}</span>
+            </li>
+            <li class="list-unstyled-item list-hours-item d-flex">
+              {{store.sunday}}
+              <span class="ml-auto">{{store.sunday_schedule}}</span>
+            </li>
+          </ul>
+          <p class="address mb-5">
+            <em>
+              <strong>{{store.address}}</strong>
+              <br />
+              {{store.city}}
+            </em>
+          </p>
+        </div>
+        {% if request.user.is_staff %}
+        <p>
+          <a style="text-decoration:none; color:white;" class="btn btn-primary btn-block" href="{% url 'update_store' store.id %}">Editar</a>
+        </p>
+    {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endfor %}
+{% endblock content %}
